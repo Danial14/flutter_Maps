@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -10,9 +11,9 @@ class HomeScreen extends StatefulWidget{
   }
 }
 class _HomeScreenState extends State<HomeScreen>{
-  Completer<GoogleMapController> _controller = Completer();
+  Completer<GoogleMapController> _coMpleter = Completer();
   List<Marker> _Markers = [];
-  List<Marker> _list = const[
+  List<Marker> _list = [
     Marker(markerId: MarkerId("1"),
     position: LatLng(24.9323526,67.0872638),
       infoWindow: InfoWindow(
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
       body: GoogleMap(
         initialCameraPosition: _cameraPosition,
         onMapCreated: (GoogleMapController googleMapController){
-          _controller.complete(googleMapController);
+          _coMpleter.complete(googleMapController);
         },
         myLocationEnabled: true,
         compassEnabled: true,
@@ -62,15 +63,37 @@ class _HomeScreenState extends State<HomeScreen>{
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
-          GoogleMapController controller = await _controller.future;
-          controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-            target: LatLng(31.98953274050448,35.881326499999965),
-            zoom: 14
-          )));
+          getUserCurrentLocation().then((value) async{
+            print("current location");
+            print(value.latitude);
+            print(value.longitude);
+            _Markers.add(Marker(
+              markerId: MarkerId("4"),
+              position: LatLng(value.latitude, value.longitude),
+              infoWindow: InfoWindow(
+                title: "New location"
+              )
+            ));
+            GoogleMapController controller = await _coMpleter.future;
+            controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+              target: LatLng(value.latitude, value.longitude),
+              zoom: 14
+            )));
+            setState(() {
+
+            });
+          });
+
         },
         child: Icon(Icons.location_on),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+  Future<Position> getUserCurrentLocation() async{
+    await Geolocator.requestPermission().then((value){}).onError((error, stackTrace){
+      print("error : ${error}");
+    });
+    return await Geolocator.getCurrentPosition();
   }
 }
