@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_map_prac/screens/custom_Markers.dart';
+import 'package:google_map_prac/screens/custom_info_window.dart';
 import 'package:google_map_prac/screens/geocoding.dart';
 import 'package:google_map_prac/screens/google_places_api.dart';
 import 'package:google_map_prac/screens/home_screen.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: CustomMarkers(),
+      home: CustomMarkerInfoWindow(),
     );
   }
 }
