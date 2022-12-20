@@ -33,7 +33,8 @@ class _NetworkIMageState extends State<NetworkIMage>{
       _Markers.add(Marker(
         markerId: MarkerId(i.toString()),
         infoWindow: InfoWindow(title: "Window", snippet: "location"),
-        icon: BitmapDescriptor.fromBytes(resizedIMageMarker)
+        icon: BitmapDescriptor.fromBytes(resizedIMageMarker),
+        position: _latLngList[i]
       ));
     }
     setState(() {
@@ -54,10 +55,12 @@ class _NetworkIMageState extends State<NetworkIMage>{
   Widget build(BuildContext context) {
     return GoogleMap(
       initialCameraPosition: CameraPosition(
+        zoom: 14,
         target: LatLng(
             24.8767965,67.0599163
         )
       ),
+      markers: _Markers,
     );
   }
 }

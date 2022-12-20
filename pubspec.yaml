@@ -67,6 +67,8 @@ flutter:
   assets:
     - assets/images/car.png
     - assets/images/parking.png
+    - assets/Map_theMe/silver_map_theMe.json
+    - assets/Map_theMe/dark_theMe.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
